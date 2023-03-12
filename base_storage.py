@@ -31,7 +31,7 @@ class StorageBase(StorageAbstract):
     def get_free_space(self) -> int:
         return self._capacity - sum(self._items.values())
 
-    @property
+
     def get_items(self):
         return self._items
 
