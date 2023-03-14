@@ -7,7 +7,7 @@ class StorageBase(StorageAbstract):
     def __init__(self, items: dict, capacity: int):
         super().__init__(items, capacity)
 
-    def add(self, name: str, quantity: int):
+    def _add(self, name: str, quantity: int):
         if self._get_free_space() < quantity:
             raise Exception("Not enough space in storage")
 
@@ -15,6 +15,10 @@ class StorageBase(StorageAbstract):
             self._items[name] += quantity
         else:
             self._items[name] = quantity
+
+    @property
+    def add(self, **kwargs):
+        return self._add
 
     def remove(self, name: str, quantity: int):
         if name not in self._items.keys():
