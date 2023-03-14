@@ -1,5 +1,6 @@
-from stores_data import storages
-from request import Request
+from utils.stores_data import storages, store_items, shop_items, store_source, shop_source
+from utils.request import Request
+from utils.file import File
 
 
 def main():
@@ -18,35 +19,43 @@ def main():
             "'second "
             "point "
             "name'\n")
+
         # creating request object from user input data
         request = Request(storages, user_input)
 
-        # creating request dict for using in printouts
-        req_data = request.return_object()
-
-        # check possibility of removing item from source point, otherwise return False to break the cycle
-        if storages[request.from_].remove(request.product, request.amount):
+        # check possibility of removing item from source point
+        try:
+            storages[request.from_].remove(request.product, request.amount)
             print('Source point contains required amount of goods')
-        else:
-            return False
 
-        # print output message as required
-        print(f'Courier gets {req_data["amount"]} {req_data["product"]} from {req_data["from"]}')
+
+        except:
+            raise Exception('Product could not be received from source storage')
+
+        print(f'Courier gets {request.amount} {request.product} from {request.from_}')
 
         # check possibility of adding items to destination point
 
         try:
             storages[request.to].add(request.product, request.amount)
             print(
-                f'Courier delivered {req_data["amount"]} {req_data["product"]} from {req_data["from"]} to'
-                f' {req_data["to"]}')
-
-
+                f'Courier delivered {request.amount} {request.product} from {request.from_} to'
+                f' {request.to}')
 
         except:
-            print(f'Courier returns undelivered {req_data["amount"]} {req_data["product"]} back to '
-                  f' {req_data["to"]}')
+            print(f'Courier returns undelivered {request.amount} {request.product} back to '
+                  f' {request.to}')
             raise Exception('Product could not be delivered to destination storage')
+
+        # update storages data
+
+        # create File class object
+        new_store_file = File(store_source)
+        new_shop_file = File(shop_source)
+
+        # update data in json files
+        new_store_file.save_file(store_items)
+        new_shop_file.save_file(shop_items)
 
         for store in storages:
             print(f'\n{store} contents {storages[store].get_items()}')

@@ -1,5 +1,3 @@
-
-
 class Request:
     def __init__(self, storages: dict, substring: str):
         request_list = substring.split(' ')

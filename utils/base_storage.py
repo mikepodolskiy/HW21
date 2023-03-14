@@ -1,10 +1,11 @@
-from storage import StorageAbstract
+# import required modules
+from utils.storage import StorageAbstract
 
 
+# creating class for requests
 class StorageBase(StorageAbstract):
     def __init__(self, items: dict, capacity: int):
         super().__init__(items, capacity)
-
 
     def add(self, name: str, quantity: int):
         if self._get_free_space() < quantity:
@@ -12,10 +13,10 @@ class StorageBase(StorageAbstract):
 
         if name in self._items:
             self._items[name] += quantity
-        self._items[name] = quantity
+        else:
+            self._items[name] = quantity
 
-
-    def remove(self,name: str, quantity:int):
+    def remove(self, name: str, quantity: int):
         if name not in self._items.keys():
             raise Exception("No such item in storage")
 
@@ -29,7 +30,6 @@ class StorageBase(StorageAbstract):
 
     def _get_free_space(self) -> int:
         return self._capacity - sum(self._items.values())
-
 
     def get_items(self):
         return self._items

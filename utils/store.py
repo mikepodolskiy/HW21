@@ -1,4 +1,4 @@
-from base_storage import StorageBase
+from utils.base_storage import StorageBase
 
 
 class Store(StorageBase):

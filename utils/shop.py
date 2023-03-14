@@ -1,4 +1,4 @@
-from base_storage import StorageBase
+from utils.base_storage import StorageBase
 
 
 class Shop(StorageBase):
@@ -7,6 +7,5 @@ class Shop(StorageBase):
 
     def add(self, name: str, quantity: int):
         if self._get_unique_items_count() >= 5 and name not in self._items:
-            raise Exception("Shop overflowed")
+            raise Exception("Not enough space in storage")
         super().add(name, quantity)
-
