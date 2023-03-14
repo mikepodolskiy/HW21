@@ -1,12 +1,18 @@
-stores_list = ['shop', 'store']
 
 
 class Request:
-    def __init__(self, substring):
-        self.from_ = substring.split(' ')[4]
-        self.to = substring.split(' ')[6]
-        self.amount = substring.split(' ')[1]
-        self.product = substring.split(' ')[2]
+    def __init__(self, storages: dict, substring: str):
+        request_list = substring.split(' ')
+        if len(request_list) != 7:
+            raise Exception('Wrong input')
+        self.from_ = request_list[4]
+        self.to = request_list[6]
+        self.amount = int(request_list[1])
+        self.product = request_list[2]
+        if self.from_ not in storages:
+            raise Exception('Wrong goods source data')
+        if self.to not in storages:
+            raise Exception('Wrong goods destination data')
 
     def return_object(self):
         return {
@@ -14,8 +20,7 @@ class Request:
             'to': self.to,
             'amount': int(self.amount),
             'product': self.product
-            }
+        }
 
-request = Request('Pass 3 cookies from strore to shop')
 
-print(request.give_object())
+
